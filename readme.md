@@ -4,6 +4,11 @@
 
 The project leverages automated software reverse engineering (SRE) pipelines and agentic AI workflows to analyze, decompile, and reconstruct low-level hardware detection utilities into a modernized application stack.
 
+![CPU-Z => HW Intel](docs/Supplements/cpu-z-to-hw-intel.png)
+
+*NOTE: prompt.md carries the complete prompt used by the agent to modernize CPU-Z into HW Intel*
+
+
 ---
 
 ## 🛠️ Reengineering Tech Stack
