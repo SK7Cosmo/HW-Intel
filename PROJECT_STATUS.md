@@ -27,7 +27,7 @@ _Last updated: 2026-10-21 19:48 IST_
 
 ```powershell
 # Option 1: PowerShell (recommended)
-Set-Location "C:\SK7 Officials\SK7 Codebase\GitHub Sourced Projects\HW Intel\backend\backend"
+Set-Location "C:\SK7 Officials\SK7 Codebase\GitHub Sourced Projects\HW Intel\backend\"
 python -m uvicorn main:app --host 127.0.0.1 --port 7890 --reload
 ```
 
