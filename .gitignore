@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files / Compiled files
+**/__pycache__/
+.mypy_cache/
+.pytest_cache/
+pycache/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Custom Folders and Files
+.env

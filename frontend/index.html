@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Hardware Intelligence Dashboard — a modern, infographic-style hardware information tool inspired by CPU-Z" />
+  <title>HW Intel — Hardware Intelligence Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/src/style.css" />
+</head>
+<body class="dark">
+
+<!-- ── SIDEBAR NAV ─────────────────────────────────────────────────────────── -->
+<nav id="sidebar" class="sidebar" aria-label="Section Navigation">
+  <div class="sidebar-header">
+    <div class="logo">
+      <svg class="logo-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="4" y="4" width="24" height="24" rx="4" fill="url(#grad1)"/>
+        <rect x="9" y="9" width="6" height="6" rx="1" fill="rgba(255,255,255,0.9)"/>
+        <rect x="17" y="9" width="6" height="6" rx="1" fill="rgba(255,255,255,0.6)"/>
+        <rect x="9" y="17" width="6" height="6" rx="1" fill="rgba(255,255,255,0.6)"/>
+        <rect x="17" y="17" width="6" height="6" rx="1" fill="rgba(255,255,255,0.9)"/>
+        <defs>
+          <linearGradient id="grad1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#3b82f6"/>
+            <stop offset="1" stop-color="#6366f1"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div>
+        <span class="logo-name">HW Intel</span>
+        <span class="logo-sub">Dashboard</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <input id="global-search" type="search" placeholder="Search hardware..." aria-label="Search hardware fields" />
+    <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M13 13l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <ul class="nav-list" role="tablist">
+    <li><a href="#overview"  class="nav-item active" data-section="overview"  role="tab" aria-selected="true">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zm10 0a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+      <span>Overview</span>
+    </a></li>
+    <li><a href="#cpu"       class="nav-item" data-section="cpu"       role="tab">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v8a2 2 0 002 2h1v1a1 1 0 102 0v-1h2v1a1 1 0 102 0v-1h2v1a1 1 0 102 0v-1h1a2 2 0 002-2V6a2 2 0 00-2-2h-2V3a1 1 0 00-1-1H7zm5 4H8a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V7a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+      <span>CPU</span>
+    </a></li>
+    <li><a href="#memory"    class="nav-item" data-section="memory"    role="tab">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm2 0v8h12V6H4zm2 2h2v4H6V8zm4 0h2v4h-2V8zm4 0h2v4h-2V8z"/></svg>
+      <span>Memory</span>
+    </a></li>
+    <li><a href="#mainboard" class="nav-item" data-section="mainboard" role="tab">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3 1h10v8H5V6zm-1 0v8a1 1 0 001 1h10a1 1 0 001-1V6a1 1 0 00-1-1H5a1 1 0 00-1 1z" clip-rule="evenodd"/></svg>
+      <span>Mainboard</span>
+    </a></li>
+    <li><a href="#gpu"       class="nav-item" data-section="gpu"       role="tab">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 4a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm0 4a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z"/></svg>
+      <span>Graphics</span>
+    </a></li>
+    <li><a href="#system"    class="nav-item" data-section="system"    role="tab">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"/></svg>
+      <span>System</span>
+    </a></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <button id="theme-toggle" class="btn-icon" title="Toggle light/dark theme" aria-label="Toggle theme">
+      <svg id="icon-moon" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+      <svg id="icon-sun"  viewBox="0 0 20 20" fill="currentColor" style="display:none"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>
+    </button>
+    <button id="refresh-btn" class="btn-icon" title="Refresh hardware data" aria-label="Refresh data">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/></svg>
+    </button>
+    <div class="export-group">
+      <button id="export-json" class="btn-export" title="Export as JSON" aria-label="Export JSON">JSON</button>
+      <button id="export-csv"  class="btn-export" title="Export as CSV"  aria-label="Export CSV">CSV</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── MAIN CONTENT ─────────────────────────────────────────────────────────── -->
+<main id="main-content" class="main-content">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <button id="menu-toggle" class="btn-icon menu-toggle" aria-label="Toggle navigation">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+    </button>
+    <h1 id="page-title" class="page-title">System Overview</h1>
+    <div class="topbar-right">
+      <span id="last-updated" class="last-updated"></span>
+      <div id="status-dot" class="status-dot" title="API Status"></div>
+    </div>
+  </header>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay" aria-live="polite">
+    <div class="spinner"></div>
+    <p>Loading hardware data…</p>
+  </div>
+
+  <!-- Error Banner -->
+  <div id="error-banner" class="error-banner" role="alert" style="display:none">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+    <span id="error-text">Failed to connect to the API.</span>
+  </div>
+
+  <!-- Search Results -->
+  <div id="search-results" class="search-results" style="display:none" role="region" aria-label="Search Results"></div>
+
+  <!-- ── OVERVIEW SECTION ──────────────────────────────────────────────────── -->
+  <section id="section-overview" class="section active" aria-label="System Overview">
+    <div class="section-grid overview-grid">
+
+      <!-- Hero CPU card -->
+      <div class="card card-hero col-span-full" id="hero-cpu-card">
+        <div class="card-glow"></div>
+        <div class="hero-layout">
+          <div class="hero-cpu-icon">
+            <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <rect x="8" y="8" width="48" height="48" rx="8" fill="url(#chipgrad)"/>
+              <rect x="18" y="18" width="28" height="28" rx="4" fill="rgba(255,255,255,0.15)"/>
+              <rect x="24" y="24" width="16" height="16" rx="3" fill="rgba(255,255,255,0.25)"/>
+              <line x1="8" y1="20" x2="18" y2="20" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="8" y1="28" x2="18" y2="28" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="8" y1="36" x2="18" y2="36" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="8" y1="44" x2="18" y2="44" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="46" y1="20" x2="56" y2="20" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="46" y1="28" x2="56" y2="28" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="46" y1="36" x2="56" y2="36" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="46" y1="44" x2="56" y2="44" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="20" y1="8" x2="20" y2="18" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="28" y1="8" x2="28" y2="18" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="36" y1="8" x2="36" y2="18" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="44" y1="8" x2="44" y2="18" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="20" y1="46" x2="20" y2="56" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="28" y1="46" x2="28" y2="56" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="36" y1="46" x2="36" y2="56" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <line x1="44" y1="46" x2="44" y2="56" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <defs>
+                <linearGradient id="chipgrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#3b82f6"/>
+                  <stop offset="1" stop-color="#6366f1"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="hero-info">
+            <div class="hero-badge" id="ov-gen"></div>
+            <h2 id="ov-cpu-name" class="hero-cpu-name">Loading…</h2>
+            <p id="ov-cpu-sub"  class="hero-cpu-sub"></p>
+            <div class="hero-specs">
+              <div class="hero-spec"><span class="hero-spec-val" id="ov-cores">—</span><span class="hero-spec-lbl">Cores</span></div>
+              <div class="hero-spec-sep"></div>
+              <div class="hero-spec"><span class="hero-spec-val" id="ov-threads">—</span><span class="hero-spec-lbl">Threads</span></div>
+              <div class="hero-spec-sep"></div>
+              <div class="hero-spec"><span class="hero-spec-val" id="ov-base">—</span><span class="hero-spec-lbl">Base MHz</span></div>
+              <div class="hero-spec-sep"></div>
+              <div class="hero-spec"><span class="hero-spec-val" id="ov-turbo">—</span><span class="hero-spec-lbl">Max Turbo</span></div>
+              <div class="hero-spec-sep"></div>
+              <div class="hero-spec"><span class="hero-spec-val" id="ov-l3">—</span><span class="hero-spec-lbl">L3 Cache</span></div>
+            </div>
+          </div>
+          <div class="hero-live">
+            <div class="live-gauge" id="cpu-gauge-wrap">
+              <svg class="gauge-svg" viewBox="0 0 120 120" aria-label="CPU usage gauge">
+                <circle class="gauge-bg" cx="60" cy="60" r="50" />
+                <circle class="gauge-fill" id="cpu-gauge-arc" cx="60" cy="60" r="50" />
+                <text class="gauge-val" id="cpu-gauge-val" x="60" y="60" dominant-baseline="middle" text-anchor="middle">—</text>
+                <text class="gauge-lbl" x="60" y="78" dominant-baseline="middle" text-anchor="middle">CPU %</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memory summary -->
+      <div class="card" id="ov-mem-card">
+        <div class="card-label">Memory</div>
+        <div class="metric-row">
+          <span class="metric-val" id="ov-mem-total">—</span>
+          <span class="metric-unit">GB</span>
+        </div>
+        <div class="metric-sub" id="ov-mem-type">—</div>
+        <div class="mem-bar-wrap" role="progressbar" aria-label="Memory usage">
+          <div class="mem-bar-fill" id="ov-mem-bar"></div>
+        </div>
+        <div class="mem-bar-labels">
+          <span id="ov-mem-used-str">—</span>
+          <span id="ov-mem-pct">—</span>
+        </div>
+        <div class="card-detail-row">
+          <span class="card-detail-lbl">Speed</span><span class="card-detail-val" id="ov-mem-speed">—</span>
+        </div>
+        <div class="card-detail-row">
+          <span class="card-detail-lbl">Config</span><span class="card-detail-val" id="ov-mem-ch">—</span>
+        </div>
+      </div>
+
+      <!-- Mainboard summary -->
+      <div class="card" id="ov-board-card">
+        <div class="card-label">Mainboard</div>
+        <div class="board-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none"><rect x="4" y="10" width="40" height="28" rx="4" fill="url(#brdgrad)"/><rect x="10" y="16" width="12" height="10" rx="2" fill="rgba(255,255,255,0.2)"/><rect x="28" y="16" width="10" height="5" rx="1" fill="rgba(255,255,255,0.15)"/><rect x="28" y="24" width="10" height="5" rx="1" fill="rgba(255,255,255,0.15)"/><rect x="10" y="30" width="28" height="2" rx="1" fill="rgba(255,255,255,0.1)"/><defs><linearGradient id="brdgrad" x1="4" y1="10" x2="44" y2="38" gradientUnits="userSpaceOnUse"><stop stop-color="#1e3a5f"/><stop offset="1" stop-color="#312e81"/></linearGradient></defs></svg>
+        </div>
+        <div class="board-name" id="ov-board-mfr">—</div>
+        <div class="board-model" id="ov-board-model">—</div>
+        <div class="card-detail-row"><span class="card-detail-lbl">BIOS</span><span class="card-detail-val" id="ov-bios-ver">—</span></div>
+        <div class="card-detail-row"><span class="card-detail-lbl">Date</span><span class="card-detail-val" id="ov-bios-date">—</span></div>
+      </div>
+
+      <!-- GPU summary -->
+      <div class="card" id="ov-gpu-card">
+        <div class="card-label">Graphics</div>
+        <div class="gpu-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none"><rect x="4" y="12" width="40" height="24" rx="4" fill="url(#gpugrad)"/><rect x="10" y="18" width="20" height="12" rx="2" fill="rgba(255,255,255,0.15)"/><circle cx="35" cy="24" r="5" fill="rgba(255,255,255,0.2)"/><defs><linearGradient id="gpugrad" x1="4" y1="12" x2="44" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#0c4a6e"/><stop offset="1" stop-color="#1e1b4b"/></linearGradient></defs></svg>
+        </div>
+        <div class="gpu-name" id="ov-gpu-name">—</div>
+        <div class="card-detail-row"><span class="card-detail-lbl">VRAM</span><span class="card-detail-val" id="ov-gpu-vram">—</span></div>
+        <div class="card-detail-row"><span class="card-detail-lbl">Driver</span><span class="card-detail-val mono" id="ov-gpu-driver">—</span></div>
+        <div class="card-detail-row"><span class="card-detail-lbl">Mode</span><span class="card-detail-val" id="ov-gpu-mode">—</span></div>
+      </div>
+
+      <!-- OS summary -->
+      <div class="card" id="ov-os-card">
+        <div class="card-label">Operating System</div>
+        <div class="os-icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none"><rect x="8" y="8" width="14" height="14" rx="2" fill="#3b82f6"/><rect x="26" y="8" width="14" height="14" rx="2" fill="#60a5fa"/><rect x="8" y="26" width="14" height="14" rx="2" fill="#60a5fa"/><rect x="26" y="26" width="14" height="14" rx="2" fill="#3b82f6"/></svg>
+        </div>
+        <div class="os-name" id="ov-os-name">—</div>
+        <div class="card-detail-row"><span class="card-detail-lbl">Version</span><span class="card-detail-val mono" id="ov-os-ver">—</span></div>
+        <div class="card-detail-row"><span class="card-detail-lbl">Build</span><span class="card-detail-val mono" id="ov-os-build">—</span></div>
+        <div class="card-detail-row"><span class="card-detail-lbl">Arch</span><span class="card-detail-val" id="ov-os-arch">—</span></div>
+        <div class="card-detail-row"><span class="card-detail-lbl">Boot</span><span class="card-detail-val" id="ov-os-boot">—</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CPU SECTION ──────────────────────────────────────────────────────── -->
+  <section id="section-cpu" class="section" aria-label="CPU Details">
+    <div class="section-grid">
+
+      <!-- Identity card -->
+      <div class="card col-span-full">
+        <div class="card-label">Processor Identity</div>
+        <table class="spec-table" id="cpu-identity-table">
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Topology card -->
+      <div class="card">
+        <div class="card-label">Core Topology</div>
+        <div class="topology-viz" id="cpu-topology-viz" aria-label="Core topology diagram"></div>
+        <div class="topology-legend">
+          <span class="legend-p">P-Core</span>
+          <span class="legend-e">E-Core</span>
+        </div>
+      </div>
+
+      <!-- Cache hierarchy card -->
+      <div class="card">
+        <div class="card-label">Cache Hierarchy</div>
+        <div class="cache-list" id="cache-list" role="list"></div>
+      </div>
+
+      <!-- Clocks card -->
+      <div class="card">
+        <div class="card-label">Clock Information</div>
+        <table class="spec-table" id="cpu-clocks-table"><tbody></tbody></table>
+        <div class="live-note">* Live readings update every 5 s</div>
+      </div>
+
+      <!-- Features card -->
+      <div class="card col-span-full">
+        <div class="card-label">Instruction Sets &amp; Features
+          <span class="badge-count" id="feature-count"></span>
+        </div>
+        <div class="feature-tags" id="feature-tags" role="list"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── MEMORY SECTION ───────────────────────────────────────────────────── -->
+  <section id="section-memory" class="section" aria-label="Memory Details">
+    <div class="section-grid">
+
+      <!-- Summary card -->
+      <div class="card">
+        <div class="card-label">Memory Summary</div>
+        <table class="spec-table" id="mem-summary-table"><tbody></tbody></table>
+      </div>
+
+      <!-- Capacity visual -->
+      <div class="card">
+        <div class="card-label">Installed Memory</div>
+        <div class="mem-capacity-viz" id="mem-capacity-viz" aria-label="Memory capacity visualization"></div>
+      </div>
+
+      <!-- Module cards -->
+      <div class="card col-span-full">
+        <div class="card-label">Memory Modules</div>
+        <div class="module-grid" id="mem-module-grid"></div>
+      </div>
+
+      <!-- SPD card -->
+      <div class="card col-span-full">
+        <div class="card-label">SPD Timings</div>
+        <div class="unavailable-notice" id="spd-notice">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+          <div>
+            <strong>SPD Timings Unavailable</strong>
+            <p>Reading SPD (Serial Presence Detect) data requires SMBus access via a kernel driver with administrator privileges. This is not available in the standard user mode under which this dashboard runs. Memory type, speed, and manufacturer data are sourced from SMBIOS via WMI.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── MAINBOARD SECTION ────────────────────────────────────────────────── -->
+  <section id="section-mainboard" class="section" aria-label="Mainboard Details">
+    <div class="section-grid">
+      <div class="card">
+        <div class="card-label">Board Information</div>
+        <table class="spec-table" id="board-table"><tbody></tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-label">BIOS / Firmware</div>
+        <table class="spec-table" id="bios-table"><tbody></tbody></table>
+      </div>
+      <div class="card col-span-full">
+        <div class="card-label">Chipset</div>
+        <div class="unavailable-notice">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+          <div>
+            <strong>Intel SoC — Raptor Lake-H (Integrated Chipset)</strong>
+            <p>On 13th Gen mobile processors, the chipset/PCH functionality is fully integrated into the SoC die. Detailed PCI-level chipset enumeration requires administrator elevation and driver support. Detected: Intel Core i5-13420H — Raptor Lake-H platform.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GPU SECTION ──────────────────────────────────────────────────────── -->
+  <section id="section-gpu" class="section" aria-label="Graphics Details">
+    <div class="section-grid">
+      <div class="card col-span-full" id="gpu-cards-container"></div>
+    </div>
+  </section>
+
+  <!-- ── SYSTEM SECTION ───────────────────────────────────────────────────── -->
+  <section id="section-system" class="section" aria-label="System Details">
+    <div class="section-grid">
+      <div class="card col-span-2">
+        <div class="card-label">Operating System</div>
+        <table class="spec-table" id="os-table"><tbody></tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-label">Storage Devices</div>
+        <div id="disk-list"></div>
+      </div>
+      <div class="card col-span-full">
+        <div class="card-label">Disk Usage</div>
+        <div id="disk-usage-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Network Adapters</div>
+        <div id="net-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Battery</div>
+        <div id="battery-info"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="/static/src/app.js"></script>
+</body>
+</html>
